@@ -8,7 +8,7 @@ int main()
 {
     vector<string> ids;
 
-    // first read all ids
+    // read all ids
 
     {
         ifstream input("input-02.txt");
@@ -20,7 +20,7 @@ int main()
         }
     }
 
-    // iterate through all pairs
+    // iterate through all combinations of two
 
     for (auto leftIter = ids.cbegin();
          leftIter != ids.cend();
