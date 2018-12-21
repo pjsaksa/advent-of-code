@@ -26,3 +26,9 @@ add_executable(03a-2 03a-2.cc)
 target_link_libraries(03a-2 pthread)
 add_executable(03b 03b.cc)
 file(COPY input-03.txt DESTINATION .)
+
+# 04
+
+add_executable(04a 04a.cc 04-common.cc)
+add_executable(04b 04b.cc 04-common.cc)
+file(COPY input-04.txt DESTINATION .)
