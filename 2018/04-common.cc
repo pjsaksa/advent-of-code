@@ -143,13 +143,15 @@ void forEachSleepCycle(const entries_t& entries,
     for (auto& entry : entries)
     {
         switch (entry.action) {
+        default:
         case LogEntry::Action::Invalid:
             throw std::runtime_error("log entry has invalid action");
-            break;
 
         case LogEntry::Action::BeginsShift:
             if (sleepBegin != NotSleeping)
                 throw std::runtime_error("elves are changing shift while sleeping");
+
+            //
 
             guard = entry.guard;
             sleepBegin = NotSleeping;
@@ -160,6 +162,8 @@ void forEachSleepCycle(const entries_t& entries,
                 throw std::runtime_error("elves are falling asleep before their shift begins");
             if (sleepBegin != NotSleeping)
                 throw std::runtime_error("elves are falling asleep while sleeping");
+
+            //
 
             sleepBegin = entry.time.minute;
             break;
@@ -176,6 +180,8 @@ void forEachSleepCycle(const entries_t& entries,
                 throw std::runtime_error("elves are sleeping 0 minutes");
             if (sleepBegin > sleepEnd)
                 throw std::runtime_error("elves are sleeping negative minutes");
+
+            //
 
             callback(guard, sleepBegin, sleepEnd);
             sleepBegin = NotSleeping;
