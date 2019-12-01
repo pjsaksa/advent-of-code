@@ -1,8 +1,3 @@
-# Introduction
-
-I decided to use C++ for solving these puzzles this year. It's not really a new language for me, but I don't get to use
-it as much as I'd like to.
-
 # 02
 
 `02b-2` implements the same algorithm as `02b-1`, but the code has been split to use multiple functions.

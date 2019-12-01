@@ -6,8 +6,8 @@
 using namespace std;
 
 struct Point {
-    int x;
-    int y;
+    int x = 0;
+    int y = 0;
 
     Point() = default;
     Point(int px, int py)
