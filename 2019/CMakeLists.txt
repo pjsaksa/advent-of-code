@@ -11,3 +11,9 @@ add_compile_options(-O3 -Wall -Wextra -Werror -fdiagnostics-color=always)
 add_executable(01a 01a.cc)
 add_executable(01b 01b.cc)
 file(COPY input-01.txt DESTINATION .)
+
+# 02
+
+add_executable(02a 02a.cc 02-common.cc)
+add_executable(02b 02b.cc 02-common.cc)
+file(COPY input-02.txt DESTINATION .)
