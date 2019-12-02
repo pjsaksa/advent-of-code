@@ -44,3 +44,9 @@ file(COPY input-05.txt DESTINATION .)
 add_executable(06a 06a.cc)
 add_executable(06b 06b.cc)
 file(COPY input-06.txt DESTINATION .)
+
+# 07
+
+add_executable(07a 07a.cc)
+add_executable(07b 07b.cc)
+file(COPY input-07.txt DESTINATION .)
