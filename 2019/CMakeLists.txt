@@ -22,3 +22,8 @@ file(COPY input-02.txt DESTINATION .)
 
 add_executable(03 03.cc)
 file(COPY input-03.txt DESTINATION .)
+
+# 04
+
+add_executable(04-1 04-1.cc)
+add_executable(04-2 04-2.cc)
