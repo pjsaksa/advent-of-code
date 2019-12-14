@@ -10,14 +10,10 @@ int main()
         vector<int> codes;
 
         readCodes(codes,
-                  "input-02.txt");
+                  "input-05.txt");
 
-        codes.at(1) = 12;
-        codes.at(2) = 2;
-
-        runCodes(codes);
-
-        cout << "Value at position 0 is " << codes.at(0) << endl;
+        runCodes(codes,
+                 {1});
     }
     catch (exception& e) {
         cerr << "exception: " << e.what() << endl;

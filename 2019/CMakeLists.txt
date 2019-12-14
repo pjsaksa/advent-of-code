@@ -14,8 +14,8 @@ file(COPY input-01.txt DESTINATION .)
 
 # 02
 
-add_executable(02a 02a.cc 02-common.cc)
-add_executable(02b 02b.cc 02-common.cc)
+add_executable(02a 02a.cc intcode.cc)
+add_executable(02b 02b.cc intcode.cc)
 file(COPY input-02.txt DESTINATION .)
 
 # 03
@@ -27,3 +27,9 @@ file(COPY input-03.txt DESTINATION .)
 
 add_executable(04-1 04-1.cc)
 add_executable(04-2 04-2.cc)
+
+# 05
+
+add_executable(05a 05a.cc intcode.cc)
+add_executable(05b 05b.cc intcode.cc)
+file(COPY input-05.txt DESTINATION .)
