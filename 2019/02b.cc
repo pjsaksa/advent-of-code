@@ -1,4 +1,4 @@
-#include "02-common.hh"
+#include "intcode.hh"
 
 #include <iostream>
 #include <stdexcept>
@@ -8,11 +8,11 @@ enum { Result = 19690720 };
 
 int main()
 {
-    try
-    {
+    try {
         vector<int> saved;
 
-        readCodes(saved);
+        readCodes(saved,
+                  "input-02.txt");
 
         for (int noun = 0;
              noun < 100;
