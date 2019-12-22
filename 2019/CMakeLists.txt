@@ -33,3 +33,8 @@ add_executable(04-2 04-2.cc)
 add_executable(05a 05a.cc intcode.cc)
 add_executable(05b 05b.cc intcode.cc)
 file(COPY input-05.txt DESTINATION .)
+
+# 06
+
+add_executable(06 06.cc)
+file(COPY input-06.txt DESTINATION .)
