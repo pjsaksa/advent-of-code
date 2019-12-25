@@ -5,12 +5,13 @@
 #include <stdexcept>
 using namespace std;
 
-void readCodes(vector<int>& codes,
-               const string& fileName)
+vector<int> readCodes(const string& fileName)
 {
     ifstream input(fileName);
     int code;
     char comma;
+
+    vector<int> codes;
 
     while (input >> code)
     {
@@ -22,6 +23,8 @@ void readCodes(vector<int>& codes,
             break;
         }
     }
+
+    return codes;
 }
 
 namespace
@@ -38,13 +41,14 @@ namespace
     }
 }
 
-void runCodes(vector<int>& codes, const vector<int>& inputs)
+vector<int> runCodes(vector<int>& codes,
+                     const vector<int>& inputs)
 {
     int ip = 0;
     bool running = true;
 
     auto input = inputs.begin();
-    bool firstOutput = true;
+    vector<int> output;
 
     while (running)
     {
@@ -79,7 +83,7 @@ void runCodes(vector<int>& codes, const vector<int>& inputs)
                     throw runtime_error("missing input");
                 }
 
-                int& dst  = access(codes, ip + 1, codes.at(ip) / 100 % 10);
+                int& dst = access(codes, ip + 1, codes.at(ip) / 100 % 10);
 
                 dst = *input++;
 
@@ -89,16 +93,9 @@ void runCodes(vector<int>& codes, const vector<int>& inputs)
 
         case 4:
             {
-                int& src  = access(codes, ip + 1, codes.at(ip) / 100 % 10);
+                int& src = access(codes, ip + 1, codes.at(ip) / 100 % 10);
 
-                if (firstOutput) {
-                    firstOutput = false;
-                }
-                else {
-                    cout << ' ';
-                }
-
-                cout << src;
+                output.push_back(src);
 
                 ip += 2;
             }
@@ -158,14 +155,35 @@ void runCodes(vector<int>& codes, const vector<int>& inputs)
 
         case 99:
             running = false;
-
-            if (!firstOutput) {
-                cout << endl;
-            }
             break;
 
         default:
             throw runtime_error("invalid code=" + to_string(codes.at(ip)) + " at index=" + to_string(ip));
         }
     }
+
+    return output;
+}
+
+ostream& operator<< (ostream& out,
+                     const vector<int>& codes)
+{
+    out << '{';
+
+    if (auto i = codes.begin();
+        i != codes.end())
+    {
+        out << *i++;
+
+        for (;
+             i != codes.end();
+             ++i)
+        {
+            cout << ',' << *i;
+        }
+    }
+
+    out << '}';
+
+    return out;
 }

@@ -7,10 +7,7 @@ using namespace std;
 int main()
 {
     try {
-        vector<int> codes;
-
-        readCodes(codes,
-                  "input-02.txt");
+        vector<int> codes = readCodes("input-02.txt");
 
         codes.at(1) = 12;
         codes.at(2) = 2;
