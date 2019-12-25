@@ -7,13 +7,11 @@ using namespace std;
 int main()
 {
     try {
-        vector<int> codes;
+        auto codes  = readCodes("input-05.txt");
+        auto output = runCodes(codes,
+                               {1});
 
-        readCodes(codes,
-                  "input-05.txt");
-
-        runCodes(codes,
-                 {1});
+        cout << output << endl;
     }
     catch (exception& e) {
         cerr << "exception: " << e.what() << endl;

@@ -9,10 +9,7 @@ enum { Result = 19690720 };
 int main()
 {
     try {
-        vector<int> saved;
-
-        readCodes(saved,
-                  "input-02.txt");
+        vector<int> saved = readCodes("input-02.txt");
 
         for (int noun = 0;
              noun < 100;

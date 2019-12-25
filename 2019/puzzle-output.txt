@@ -18,10 +18,18 @@ Different password count, first part: 475
 Different password count, first part: 475
                          second part: 297
 ----- ./05a -----
-0 0 0 0 0 0 0 0 0 15508323
+{0,0,0,0,0,0,0,0,0,15508323}
 ----- ./05b -----
-9006327
+{9006327}
 ----- ./06 -----
 objects: 1654
 Total orbit count: 295936
 Orbits between YOU and SAN: 457
+----- ./07a test-07a-1.txt -----
+phases {4,3,2,1,0} produced highest signal 43210
+----- ./07a test-07a-2.txt -----
+phases {0,1,2,3,4} produced highest signal 54321
+----- ./07a test-07a-3.txt -----
+phases {1,0,4,3,2} produced highest signal 65210
+----- ./07a -----
+phases {4,1,0,2,3} produced highest signal 20413
