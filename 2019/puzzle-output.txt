@@ -1,0 +1,27 @@
+----- ./01a -----
+Total fuel: 3425624
+----- ./01b -----
+Total fuel: 5135558
+----- ./02a -----
+Value at position 0 is 3706713
+----- ./02b -----
+With noun 86 and verb 9 the value at position 0 is 19690720
+Answer: 8609
+----- ./03 -----
+154 intersections
+The closest is at coordinates (645, 6) = 651 squares
+The fewest combined steps is at coordinates (709, 0) = 7534 squares
+----- ./04-1 -----
+Different password count, first part: 475
+                         second part: 297
+----- ./04-2 -----
+Different password count, first part: 475
+                         second part: 297
+----- ./05a -----
+0 0 0 0 0 0 0 0 0 15508323
+----- ./05b -----
+9006327
+----- ./06 -----
+objects: 1654
+Total orbit count: 295936
+Orbits between YOU and SAN: 457
