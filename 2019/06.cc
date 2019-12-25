@@ -175,6 +175,7 @@ int main()
     }
     catch (exception& e) {
         cerr << "exception: " << e.what() << endl;
+        return 1;
     }
 
     return 0;

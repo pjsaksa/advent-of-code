@@ -6,6 +6,10 @@ project(aoc-2019)
 set(CMAKE_CXX_STANDARD 17)
 add_compile_options(-O3 -Wall -Wextra -Werror -fdiagnostics-color=always)
 
+# test scripts
+
+file(COPY do-regression-test puzzle-output.txt DESTINATION .)
+
 # 01
 
 add_executable(01a 01a.cc)

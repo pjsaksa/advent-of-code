@@ -244,8 +244,7 @@ intersections_t findIntersections(const wire_t& wire1,
 
 int main()
 {
-    try
-    {
+    try {
         const auto wires = readInput();
 
         if (wires.size() != 2) {
@@ -280,9 +279,11 @@ int main()
 
         cout << "The fewest combined steps is at coordinates " << intersections[0].point()
              << " = " << intersections[0].steps() << " squares" << endl;
-
     }
     catch (exception& e) {
         cerr << "exception: " << e.what() << endl;
+        return 1;
     }
+
+    return 0;
 }
