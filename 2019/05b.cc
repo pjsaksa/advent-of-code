@@ -7,11 +7,11 @@ using namespace std;
 int main()
 {
     try {
-        auto codes  = readCodes("input-05.txt");
-        auto output = runCodes(codes,
-                               {5});
+        auto program = Program::read("input-05.txt");
 
-        cout << output << endl;
+        program.run({5});
+
+        cout << as_csv(program.output) << endl;
     }
     catch (exception& e) {
         cerr << "exception: " << e.what() << endl;

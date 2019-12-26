@@ -7,14 +7,14 @@ using namespace std;
 int main()
 {
     try {
-        vector<int> codes = readCodes("input-02.txt");
+        auto program = Program::read("input-02.txt");
 
-        codes.at(1) = 12;
-        codes.at(2) = 2;
+        program[1] = 12;
+        program[2] = 2;
 
-        runCodes(codes);
+        program.run();
 
-        cout << "Value at position 0 is " << codes.at(0) << endl;
+        cout << "Value at position 0 is " << program[0] << endl;
     }
     catch (exception& e) {
         cerr << "exception: " << e.what() << endl;
