@@ -25,7 +25,7 @@ int main(int argc,
     } highest;
 
     try {
-        const vector<int> originalCodes = readCodes(fileName);
+        const auto original = Program::read(fileName);
 
         vector<int> phases = {0,1,2,3,4};
 
@@ -34,12 +34,12 @@ int main(int argc,
 
             for (int phase : phases)
             {
-                auto codes  = originalCodes;
-                auto output = runCodes(codes,
-                                       {phase, signal});
+                auto program = original;
 
-                if (output.size() == 1) {
-                    signal = output[0];
+                program.run({phase, signal});
+
+                if (program.output.size() == 1) {
+                    signal = program.output[0];
                 }
                 else {
                     runtime_error("the amount of outputs is not 1");
@@ -55,7 +55,7 @@ int main(int argc,
         while (next_permutation(phases.begin(),
                                 phases.end()));
 
-        cout << "phases " << highest.phases << " produced highest signal " << highest.signal << endl;
+        cout << "phases " << as_csv(highest.phases) << " produced highest signal " << highest.signal << endl;
     }
     catch (exception& e) {
         cerr << "exception: " << e.what() << endl;

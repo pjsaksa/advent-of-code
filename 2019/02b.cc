@@ -9,7 +9,7 @@ enum { Result = 19690720 };
 int main()
 {
     try {
-        vector<int> saved = readCodes("input-02.txt");
+        const auto original = Program::read("input-02.txt");
 
         for (int noun = 0;
              noun < 100;
@@ -19,14 +19,14 @@ int main()
                  verb < 100;
                  ++verb)
             {
-                vector<int> codes = saved;
+                auto program = original;
 
-                codes.at(1) = noun;
-                codes.at(2) = verb;
+                program[1] = noun;
+                program[2] = verb;
 
-                runCodes(codes);
+                program.run();
 
-                if (codes.at(0) == Result)
+                if (program[0] == Result)
                 {
                     cout << "With noun " << noun << " and verb " << verb << " the value at position 0 is " << Result << endl
                          << "Answer: " << (100 * noun + verb) << endl;
