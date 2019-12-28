@@ -33,3 +33,9 @@ phases {0,1,2,3,4} produced highest signal 54321
 phases {1,0,4,3,2} produced highest signal 65210
 ----- ./07a -----
 phases {4,1,0,2,3} produced highest signal 20413
+----- ./07b test-07b-1.txt -----
+phases {9,8,7,6,5} produced highest signal 139629729
+----- ./07b test-07b-2.txt -----
+phases {9,7,8,5,6} produced highest signal 18216
+----- ./07b -----
+phases {5,9,6,8,7} produced highest signal 3321777
