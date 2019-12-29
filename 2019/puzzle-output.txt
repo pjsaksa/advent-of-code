@@ -39,3 +39,12 @@ phases {9,8,7,6,5} produced highest signal 139629729
 phases {9,7,8,5,6} produced highest signal 18216
 ----- ./07b -----
 phases {5,9,6,8,7} produced highest signal 3321777
+----- ./08a -----
+(1*2) is 2806 when 0-count was 5
+----- ./08b -----
+#### ###    ##  ##  ###  
+   # #  #    # #  # #  # 
+  #  ###     # #  # ###  
+ #   #  #    # #### #  # 
+#    #  # #  # #  # #  # 
+#### ###   ##  #  # ###  
