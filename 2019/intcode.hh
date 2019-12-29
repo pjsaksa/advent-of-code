@@ -3,44 +3,54 @@
 #include <string>
 #include <vector>
 
+#include <cstdint>
+
 class Program {
 public:
+    enum {
+        TechnicalAddressLimit = 1024 * 1024,
+    };
+
     enum class State : uint32_t {
         Halted,
         Running,
         NeedInput,
     };
 
-    //
-
-    std::deque<int> input;
-    std::deque<int> output;
+    using data_t  = int64_t;
+    using udata_t = uint64_t;
 
     //
 
-    int& operator[] (const int index);
+    std::deque<data_t> input;
+    std::deque<data_t> output;
 
     //
 
-    void start(const std::deque<int>& input = {});
+    data_t& operator[] (const data_t addr);
+
+    //
+
+    void start(const std::deque<data_t>& input = {});
 
     State step();
     State run();
 
-    State run(const std::deque<int>& input);
+    State run(const std::deque<data_t>& input);
 
     //
 
     static Program read(const std::string& fileName);
 
 private:
-    std::vector<int> m_code;
-    int m_ip = 0;
+    std::vector<data_t> m_code;
+    data_t m_ip = 0;
+    data_t m_relBase = 0;
 
     //
 
-    int& access(int ip,
-                int accessMode);
+    data_t& access(data_t addr,
+                   int accessMode);
 };
 
 // -----
