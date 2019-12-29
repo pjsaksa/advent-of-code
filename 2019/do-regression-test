@@ -28,6 +28,11 @@ run () {
     run ./07b
     run ./08a
     run ./08b
+    run ./09a test-09a-1.txt
+    run ./09a test-09a-2.txt
+    run ./09a test-09a-3.txt
+    run ./09a
+    run ./09b
 } >regressed-output.txt
 
 if ! diff -u puzzle-output.txt regressed-output.txt

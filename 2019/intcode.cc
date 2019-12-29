@@ -5,12 +5,17 @@
 #include <stdexcept>
 using namespace std;
 
-int& Program::operator[] (const int index)
+Program::data_t& Program::operator[] (const data_t addr)
 {
-    return m_code.at(index);
+    if (addr < 0)
+        throw runtime_error("trying to access negative address: " + addr);
+    if (m_code.size() <= static_cast<udata_t>( addr ))
+        m_code.resize(addr + 1);
+
+    return m_code.at(addr);
 }
 
-void Program::start(const std::deque<int>& newInput)
+void Program::start(const std::deque<data_t>& newInput)
 {
     m_ip = 0;
     input = newInput;
@@ -22,9 +27,9 @@ Program::State Program::step()
     switch (m_code.at(m_ip) % 100) {
     case 1:
         {
-            const int& src1 = access(m_ip + 1, m_code.at(m_ip) / 100 % 10);
-            const int& src2 = access(m_ip + 2, m_code.at(m_ip) / 1000 % 10);
-            int&       dst  = access(m_ip + 3, m_code.at(m_ip) / 10000 % 10);
+            const data_t& src1 = access(m_ip + 1, m_code.at(m_ip) / 100 % 10);
+            const data_t& src2 = access(m_ip + 2, m_code.at(m_ip) / 1000 % 10);
+            data_t&       dst  = access(m_ip + 3, m_code.at(m_ip) / 10000 % 10);
 
             dst = src1 + src2;
 
@@ -34,9 +39,9 @@ Program::State Program::step()
 
     case 2:
         {
-            const int& src1 = access(m_ip + 1, m_code.at(m_ip) / 100 % 10);
-            const int& src2 = access(m_ip + 2, m_code.at(m_ip) / 1000 % 10);
-            int&       dst  = access(m_ip + 3, m_code.at(m_ip) / 10000 % 10);
+            const data_t& src1 = access(m_ip + 1, m_code.at(m_ip) / 100 % 10);
+            const data_t& src2 = access(m_ip + 2, m_code.at(m_ip) / 1000 % 10);
+            data_t&       dst  = access(m_ip + 3, m_code.at(m_ip) / 10000 % 10);
 
             dst = src1 * src2;
 
@@ -50,7 +55,7 @@ Program::State Program::step()
                 return State::NeedInput;
             }
 
-            int& dst = access(m_ip + 1, m_code.at(m_ip) / 100 % 10);
+            data_t& dst = access(m_ip + 1, m_code.at(m_ip) / 100 % 10);
 
             dst = input.front();
             input.pop_front();
@@ -61,7 +66,7 @@ Program::State Program::step()
 
     case 4:
         {
-            int& src = access(m_ip + 1, m_code.at(m_ip) / 100 % 10);
+            data_t& src = access(m_ip + 1, m_code.at(m_ip) / 100 % 10);
 
             output.push_back(src);
 
@@ -71,8 +76,8 @@ Program::State Program::step()
 
     case 5:
         {
-            int& cond = access(m_ip + 1, m_code.at(m_ip) / 100 % 10);
-            int& tgt  = access(m_ip + 2, m_code.at(m_ip) / 1000 % 10);
+            data_t& cond = access(m_ip + 1, m_code.at(m_ip) / 100 % 10);
+            data_t& tgt  = access(m_ip + 2, m_code.at(m_ip) / 1000 % 10);
 
             if (cond != 0) {
                 m_ip = tgt;
@@ -85,8 +90,8 @@ Program::State Program::step()
 
     case 6:
         {
-            int& cond = access(m_ip + 1, m_code.at(m_ip) / 100 % 10);
-            int& tgt  = access(m_ip + 2, m_code.at(m_ip) / 1000 % 10);
+            data_t& cond = access(m_ip + 1, m_code.at(m_ip) / 100 % 10);
+            data_t& tgt  = access(m_ip + 2, m_code.at(m_ip) / 1000 % 10);
 
             if (cond == 0) {
                 m_ip = tgt;
@@ -99,9 +104,9 @@ Program::State Program::step()
 
     case 7:
         {
-            int& cond1 = access(m_ip + 1, m_code.at(m_ip) / 100 % 10);
-            int& cond2 = access(m_ip + 2, m_code.at(m_ip) / 1000 % 10);
-            int& dst   = access(m_ip + 3, m_code.at(m_ip) / 10000 % 10);
+            data_t& cond1 = access(m_ip + 1, m_code.at(m_ip) / 100 % 10);
+            data_t& cond2 = access(m_ip + 2, m_code.at(m_ip) / 1000 % 10);
+            data_t& dst   = access(m_ip + 3, m_code.at(m_ip) / 10000 % 10);
 
             dst = (cond1 < cond2);
 
@@ -111,13 +116,23 @@ Program::State Program::step()
 
     case 8:
         {
-            int& cond1 = access(m_ip + 1, m_code.at(m_ip) / 100 % 10);
-            int& cond2 = access(m_ip + 2, m_code.at(m_ip) / 1000 % 10);
-            int& dst   = access(m_ip + 3, m_code.at(m_ip) / 10000 % 10);
+            data_t& cond1 = access(m_ip + 1, m_code.at(m_ip) / 100 % 10);
+            data_t& cond2 = access(m_ip + 2, m_code.at(m_ip) / 1000 % 10);
+            data_t& dst   = access(m_ip + 3, m_code.at(m_ip) / 10000 % 10);
 
             dst = (cond1 == cond2);
 
             m_ip += 4;
+        }
+        break;
+
+    case 9:
+        {
+            data_t& src = access(m_ip + 1, m_code.at(m_ip) / 100 % 10);
+
+            m_relBase += src;
+
+            m_ip += 2;
         }
         break;
 
@@ -142,7 +157,7 @@ Program::State Program::run()
     return state;
 }
 
-Program::State Program::run(const std::deque<int>& newInput)
+Program::State Program::run(const std::deque<data_t>& newInput)
 {
     start(newInput);
     return run();
@@ -151,7 +166,7 @@ Program::State Program::run(const std::deque<int>& newInput)
 Program Program::read(const string& fileName)
 {
     ifstream input(fileName);
-    int code;
+    data_t code;
     char comma;
 
     Program program;
@@ -170,12 +185,13 @@ Program Program::read(const string& fileName)
     return program;
 }
 
-int& Program::access(const int ip,
-                     const int accessMode)
+Program::data_t& Program::access(const data_t addr,
+                                 const int accessMode)
 {
     switch (accessMode) {
-    case 0: return m_code.at(m_code.at(ip));
-    case 1: return m_code.at(ip);
-    default: throw runtime_error("invalid access mode at " + to_string(ip));
+    case 0: return (*this)[m_code.at(addr)];
+    case 1: return (*this)[addr];
+    case 2: return (*this)[m_code.at(addr) + m_relBase];
+    default: throw runtime_error("invalid access mode at " + to_string(addr));
     }
 }
