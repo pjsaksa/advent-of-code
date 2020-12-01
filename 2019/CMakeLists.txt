@@ -65,3 +65,11 @@ add_executable(09b 09b.cc intcode.cc)
 file(COPY input-09.txt
           test-09a-1.txt test-09a-2.txt test-09a-3.txt
      DESTINATION .)
+
+# 10
+
+add_executable(10a 10a.cc)
+#add_executable(10b 10b.cc)
+file(COPY input-10.txt
+          test-10a-1.txt test-10a-2.txt test-10a-3.txt test-10a-4.txt test-10a-5.txt
+     DESTINATION .)
