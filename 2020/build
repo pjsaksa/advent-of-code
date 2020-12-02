@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+SRC="$(dirname "$0")"
+DST="$(pwd)"
+
+go build "$SRC/01a.go" &
+
+wait
