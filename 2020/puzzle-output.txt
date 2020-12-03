@@ -10,3 +10,11 @@ Match:
 Password count: 1000
 Valid passwords: 620
 Valid passwords: 727
+----- ./03 -----
+Map of trees has 323 rows and 31 columns
+With slope 1:1, there are 72 hits
+With slope 1:3, there are 207 hits
+With slope 1:5, there are 90 hits
+With slope 1:7, there are 60 hits
+With slope 2:1, there are 33 hits
+Multiplication of hits: 2655892800
