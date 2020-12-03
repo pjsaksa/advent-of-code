@@ -6,3 +6,7 @@ Match:
 Match:
 - 867 + 264 + 889 = 2020
 - 867 * 264 * 889 = 203481432
+----- ./02 -----
+Password count: 1000
+Valid passwords: 620
+Valid passwords: 727
