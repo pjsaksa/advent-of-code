@@ -4,12 +4,15 @@ all : build data
 
 GOBUILD=go build -o $@ $^
 
-build : $(DST)/01a $(DST)/01b
+build : $(DST)/01a $(DST)/01b $(DST)/02
 
 $(DST)/01a : $(SRC)/01a.go $(SRC)/01-entries.go
 	$(GOBUILD)
 
 $(DST)/01b : $(SRC)/01b.go $(SRC)/01-entries.go
+	$(GOBUILD)
+
+$(DST)/02 : $(SRC)/02.go $(SRC)/02-passwords.go
 	$(GOBUILD)
 
 #####
@@ -18,10 +21,10 @@ COPYFILE=cp -f $^ $@
 
 FORCE:;
 
-data : FORCE $(DST)/input-01.txt
+data : FORCE $(DST)/input-01.txt $(DST)/input-02.txt
 
-$(DST)/input-01.txt : $(SRC)/input-01.txt
-	$(COPYFILE)
+$(DST)/input-01.txt : $(SRC)/input-01.txt ; $(COPYFILE)
+$(DST)/input-02.txt : $(SRC)/input-02.txt ; $(COPYFILE)
 
 #####
 
