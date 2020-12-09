@@ -4,7 +4,7 @@ all : build data
 
 GOBUILD=go build -o $@ $^
 
-build : $(DST)/01a $(DST)/01b $(DST)/02 $(DST)/03
+build : $(DST)/01a $(DST)/01b $(DST)/02 $(DST)/03 $(DST)/04
 
 $(DST)/01a : $(SRC)/01a.go $(SRC)/01-entries.go
 	$(GOBUILD)
@@ -18,17 +18,21 @@ $(DST)/02 : $(SRC)/02.go $(SRC)/02-passwords.go
 $(DST)/03 : $(SRC)/03.go $(SRC)/03-treemap.go
 	$(GOBUILD)
 
+$(DST)/04 : $(SRC)/04.go $(SRC)/04-passport.go
+	$(GOBUILD)
+
 #####
 
 COPYFILE=cp -f $^ $@
 
 FORCE:;
 
-data : FORCE $(DST)/input-01.txt $(DST)/input-02.txt $(DST)/input-03.txt
+data : FORCE $(DST)/input-01.txt $(DST)/input-02.txt $(DST)/input-03.txt $(DST)/input-04.txt
 
 $(DST)/input-01.txt : $(SRC)/input-01.txt ; $(COPYFILE)
 $(DST)/input-02.txt : $(SRC)/input-02.txt ; $(COPYFILE)
 $(DST)/input-03.txt : $(SRC)/input-03.txt ; $(COPYFILE)
+$(DST)/input-04.txt : $(SRC)/input-04.txt ; $(COPYFILE)
 
 #####
 

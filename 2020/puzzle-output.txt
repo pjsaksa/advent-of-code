@@ -18,3 +18,7 @@ With slope 1:5, there are 90 hits
 With slope 1:7, there are 60 hits
 With slope 2:1, there are 33 hits
 Multiplication of hits: 2655892800
+----- ./04 -----
+Total number of passports: 259
+...of which 192 are valid (1st check)
+...of which 101 are valid (2nd check)
