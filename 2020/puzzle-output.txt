@@ -22,3 +22,6 @@ Multiplication of hits: 2655892800
 Total number of passports: 259
 ...of which 192 are valid (1st check)
 ...of which 101 are valid (2nd check)
+----- ./05 -----
+There are 743 seats and the numbers go from 95 to 838
+Missing seat 714
