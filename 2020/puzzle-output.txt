@@ -25,3 +25,8 @@ Total number of passports: 259
 ----- ./05 -----
 There are 743 seats and the numbers go from 95 to 838
 Missing seat 714
+----- ./06 -----
+There are 490 groups
+Answer counts in groups of 100:
+- Any user answers 'yes':   970  + 991  + 921  + 996  + 1057 + 863  + 882  = 6680
+- All users answer 'yes':   404  + 477  + 430  + 545  + 457  + 382  + 422  = 3117

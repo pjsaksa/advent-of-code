@@ -18,6 +18,7 @@ run () {
     run ./03
     run ./04
     run ./05
+    run ./06
 } >"$DST"/regression-test-output.txt
 
 if ! diff -u "$SRC"/puzzle-output.txt "$DST"/regression-test-output.txt
