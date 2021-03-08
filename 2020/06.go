@@ -119,8 +119,8 @@ func PrintCounts(title string, group *Group) {
 		BatchSize = 70
 	)
 
-	total := 0
-	total_batch := 0
+	totalCount := 0
+	batchCount := 0
 
 	fmt.Print(title)
 
@@ -132,15 +132,15 @@ func PrintCounts(title string, group *Group) {
 				fmt.Printf(" + ")
 			}
 
-			fmt.Printf("%-4d", total_batch)
+			fmt.Printf("%-4d", batchCount)
 
-			total += total_batch
-			total_batch = 0
+			totalCount += batchCount
+			batchCount = 0
 		}
 
-		total_batch += ans.Count()
+		batchCount += ans.Count()
 	}
-	total += total_batch
+	totalCount += batchCount
 
-	fmt.Printf(" + %-4d = %d\n", total_batch, total)
+	fmt.Printf(" + %-4d = %d\n", batchCount, totalCount)
 }
