@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"os"
 	"sort"
 )
@@ -28,12 +27,6 @@ func main() {
 }
 
 func (seats *Seats) ReadInput(fileName string) {
-	const (
-		ReadChunk = 50
-	)
-
-	//
-
 	file,err := os.Open(fileName)
 
 	if err != nil {
@@ -43,27 +36,16 @@ func (seats *Seats) ReadInput(fileName string) {
 
 	//
 
-	var chunk [ReadChunk]int
 	var in string
 
 	for {
-		for i := 0; i < ReadChunk; i++ {
-			_,err := fmt.Fscanln(file, &in)
-
-			chunk[i] = convertFromBSP(in)
-
-			if err == io.EOF {
-				*seats = append(*seats, chunk[0:i]...)
-
-				sort.Slice(*seats, func(a, b int) bool { return (*seats)[a] < (*seats)[b] })
-
-				return
-			} else if err != nil {
-				panic(err)
-			}
+		if count,err := fmt.Fscanln(file, &in)
+		count == 1 && err == nil {
+			*seats = append(*seats, convertFromBSP(in))
+		} else {
+			sort.Slice(*seats, func(a, b int) bool { return (*seats)[a] < (*seats)[b] })
+			break
 		}
-
-		*seats = append(*seats, chunk[0:ReadChunk]...)
 	}
 }
 

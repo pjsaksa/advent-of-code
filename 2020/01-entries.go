@@ -2,19 +2,12 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"os"
 )
 
 type Entries []int
 
 func (entries *Entries) ReadInput(fileName string) {
-	const (
-		ReadChunk = 50
-	)
-
-	//
-
 	file,err := os.Open(fileName)
 
 	if err != nil {
@@ -24,20 +17,14 @@ func (entries *Entries) ReadInput(fileName string) {
 
 	//
 
-	var chunk [ReadChunk]int
+	var item int
 
 	for {
-		for i := 0; i < ReadChunk; i++ {
-			_,err := fmt.Fscanln(file, &chunk[i])
-
-			if err == io.EOF {
-				*entries = append(*entries, chunk[0:i]...)
-				return
-			} else if err != nil {
-				panic(err)
-			}
+		if count,err := fmt.Fscanln(file, &item);
+		count == 1 && err == nil {
+			*entries = append(*entries, item)
+		} else {
+			break
 		}
-
-		*entries = append(*entries, chunk[0:ReadChunk]...)
 	}
 }

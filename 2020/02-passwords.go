@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"os"
 	"strings"
 )
@@ -16,12 +15,6 @@ type Password struct {
 type Passwords []Password
 
 func (passwords *Passwords) ReadInput(fileName string) {
-	const (
-		ReadChunk = 50
-	)
-
-	//
-
 	file,err := os.Open(fileName)
 
 	if err != nil {
@@ -31,21 +24,15 @@ func (passwords *Passwords) ReadInput(fileName string) {
 
 	//
 
-	var chunk [ReadChunk]Password
+	var item Password
 
 	for {
-		for i := 0; i < ReadChunk; i++ {
-			_,err := fmt.Fscanf(file, "%d-%d %c: %s", &chunk[i].i1, &chunk[i].i2, &chunk[i].ch, &chunk[i].password)
-
-			if err == io.EOF {
-				*passwords = append(*passwords, chunk[0:i]...)
-				return
-			} else if err != nil {
-				panic(err)
-			}
+		if count,err := fmt.Fscanf(file, "%d-%d %c: %s", &item.i1, &item.i2, &item.ch, &item.password);
+		count == 4 && err == nil {
+			*passwords = append(*passwords, item)
+		} else {
+			break
 		}
-
-		*passwords = append(*passwords, chunk[0:ReadChunk]...)
 	}
 }
 
