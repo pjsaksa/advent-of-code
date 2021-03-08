@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"io"
 	"os"
 )
 
@@ -48,12 +47,6 @@ func main() {
 }
 
 func (groups *Groups) ReadInput(fileName string) {
-	const (
-		ReadChunk = 20
-	)
-
-	//
-
 	file,err := os.Open(fileName)
 
 	if err != nil {
@@ -63,34 +56,32 @@ func (groups *Groups) ReadInput(fileName string) {
 
 	//
 
-	var chunk [ReadChunk]Group
-	c := 0
-
 	in := bufio.NewReader(file)
 
-	for {
-		line,err := in.ReadString('\n')
+	for running := true ; running ; {
+		var item Group
+		itemEmpty := true
 
-		if err == io.EOF {
-			*groups = append(*groups, chunk[0 : c+1]...)
-			return
-		} else if err != nil {
-			panic(err)
-		}
+		for {
+			line,err := in.ReadString('\n')
 
-		//
-
-		if line == "\n" {
-			c++
-
-			if c == ReadChunk {
-				*groups = append(*groups, chunk[0 : ReadChunk]...)
-				c = 0
+			if err != nil {
+				running = false
+				break
 			}
 
-			chunk[c] = Group{}
-		} else {
-			chunk[c] = append(chunk[c], parseAnswers(line))
+			//
+
+			if line == "\n" {
+				break
+			}
+
+			item = append(item, parseAnswers(line))
+			itemEmpty = false
+		}
+
+		if !itemEmpty {
+			*groups = append(*groups, item)
 		}
 	}
 }

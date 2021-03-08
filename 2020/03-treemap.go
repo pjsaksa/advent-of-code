@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"io"
 	"os"
 	"strings"
 )
@@ -10,12 +9,6 @@ import (
 type TreeMap []string
 
 func (tmap *TreeMap) ReadInput(fileName string) {
-	const (
-		ReadChunk = 50
-	)
-
-	//
-
 	file,err := os.Open(fileName)
 
 	if err != nil {
@@ -27,23 +20,15 @@ func (tmap *TreeMap) ReadInput(fileName string) {
 
 	in := bufio.NewReader(file)
 
-	var chunk [ReadChunk]string
+	var item string
 
 	for {
-		for i := 0; i < ReadChunk; i++ {
-			chunk[i],err = in.ReadString('\n')
-
-			if err == io.EOF {
-				*tmap = append(*tmap, chunk[0:i]...)
-				return
-			} else if err != nil {
-				panic(err)
-			}
-
-			chunk[i] = strings.TrimSuffix(chunk[i], string('\n'))
+		if item,err = in.ReadString('\n')
+		err == nil {
+			*tmap = append(*tmap, strings.TrimSuffix(item, string('\n')))
+		} else {
+			break
 		}
-
-		*tmap = append(*tmap, chunk[0:ReadChunk]...)
 	}
 }
 

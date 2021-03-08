@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"io"
 	"os"
 	"regexp"
 	"strings"
@@ -43,12 +42,6 @@ func parseFieldKey(str string) int {
 }
 
 func (pps *Passports) ReadInput(fileName string) {
-	const (
-		ReadChunk = 10
-	)
-
-	//
-
 	file,err := os.Open(fileName)
 
 	if err != nil {
@@ -60,43 +53,43 @@ func (pps *Passports) ReadInput(fileName string) {
 
 	in := bufio.NewReader(file)
 
+	var item Passport
+	itemEmpty := true
+
 	for {
-		var chunk [ReadChunk]Passport
+		line,err := in.ReadString('\n')
 
-		for ci := 0; ci < ReadChunk; {
-			line,err := in.ReadString('\n')
-
-			if err == io.EOF {
-				ci++
-				*pps = append(*pps, chunk[0:ci]...)
-				return
-			} else if err != nil {
-				panic(err)
+		if err != nil {
+			if !itemEmpty {
+				*pps = append(*pps, item)
 			}
-
-			line = strings.TrimSpace(line)
-
-			if len(line) > 0 {
-				for _,f := range strings.Split(line, " ") {
-					keys := strings.Split(f, ":")
-					if len(keys) == 2 {
-						key,value := parseFieldKey(keys[0]),keys[1]
-
-						if key < 0 {
-							panic("invalid key")
-						}
-
-						chunk[ci].fields[key] = value
-					} else {
-						panic("number of ':' is not 1")
-					}
-				}
-			} else {
-				ci++
-			}
+			return
 		}
 
-		*pps = append(*pps, chunk[0:ReadChunk]...)
+		line = strings.TrimSpace(line)
+
+		if len(line) > 0 {
+			for _,f := range strings.Split(line, " ") {
+				keys := strings.Split(f, ":")
+				if len(keys) == 2 {
+					key,value := parseFieldKey(keys[0]),keys[1]
+
+					if key < 0 {
+						panic("invalid key")
+					}
+
+					item.fields[key] = value
+					itemEmpty = false
+				} else {
+					panic("number of ':' is not 1")
+				}
+			}
+		} else if !itemEmpty {
+			*pps = append(*pps, item)
+
+			item = Passport{}
+			itemEmpty = true
+		}
 	}
 }
 
