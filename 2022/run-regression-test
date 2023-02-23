@@ -1,0 +1,25 @@
+#!/bin/bash
+
+SRC="$(cd $(dirname "$0") && pwd)"
+DST="$(pwd)"
+
+run () {
+    echo '-----' "$1" '-----'
+    if ! "$1" --test
+    then
+        echo '----- PUZZLE FAILED -----'
+        exit 1
+    fi
+}
+
+{
+	run ./01a
+} >"$DST"/regression-test-output.txt
+
+if ! diff -u "$SRC"/puzzle-output.txt "$DST"/regression-test-output.txt
+then
+    echo
+    echo '----- REGRESSION TEST FAILED -----'
+    echo
+    exit 1
+fi
