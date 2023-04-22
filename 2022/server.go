@@ -68,7 +68,7 @@ func RenderCSS(out http.ResponseWriter, req *http.Request) {
 		out.Header().Set("Content-Type", "text/css")
 		fmt.Fprintf(out,
 			`body {
-	background: #e0e0e0;
+	background: #a0a0a0;
 }
 `)
 	default:

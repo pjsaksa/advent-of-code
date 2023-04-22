@@ -216,12 +216,12 @@ func (page *Page01) RenderCSS(out http.ResponseWriter, req *http.Request) {
 	background: white;
 }
 #view1 img {
-	background: white;
-	border: 1px #c0c0c0 solid;
+	background: black;
+	border: 4px #40b0f0 solid;
 }
 #view1 canvas {
 	position: absolute;
-	border: 1px #c0c0c0 solid;
+	border: 4px #40b0f0 solid;
 	z-index: 1;
 }
 #info {
@@ -343,7 +343,7 @@ function hlBar(range, data) {
 		uiCanvas.width,
 		uiCanvas.height)
 
-	ctx.fillStyle = "red"
+	ctx.fillStyle = "#40b0f0"
 	for (let idx = 0; idx < data.length; idx++) {
 		ctx.fillRect(
 			data[idx].bar*3 + 1,
