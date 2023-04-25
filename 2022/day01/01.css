@@ -1,0 +1,42 @@
+#statistics {
+	border-collapse: collapse;
+	margin: 0px 2em;
+}
+#statistics th,
+#statistics td {
+	border: 1px #c0c0c0 solid;
+	padding: 0px 1em;
+	text-align: center;
+}
+#statistics th {
+	background: white;
+}
+#statistics td {
+	background: white;
+}
+#view1 img {
+	background: black;
+	border: 4px #40b0f0 solid;
+}
+#view1 canvas {
+	position: absolute;
+	border: 4px #40b0f0 solid;
+	z-index: 1;
+}
+#info {
+	background: white;
+	border: 1px #c0c0c0 solid;
+	padding: 0px 1em;
+}
+#info ul {
+	list-style-type: none;
+	padding: 0px;
+}
+#unlock {
+	margin: 2px 2em;
+	border: 2px #c0c0c0 solid;
+	background: Fffd0d0;
+	color: #a00000;
+	font-family: sans-serif;
+	font-variant: small-caps;
+}
