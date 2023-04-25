@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"aoc-2022/day01"
+	"aoc-2022/util"
 )
 
 func main() {
@@ -12,7 +15,7 @@ func main() {
 	//
 
 	srv.pages["/default.css"] = RenderCSS
-	initPage01(srv.pages)
+	day01.InitPage01(srv.pages)
 
 	//
 
@@ -25,16 +28,14 @@ func main() {
 
 // ------------------------------------------------------------
 
-type HandlerMap map[string]http.HandlerFunc
-
 type Server struct {
 	httpServer http.Server
-	pages      HandlerMap
+	pages      util.HandlerMap
 }
 
 func newServer() *Server {
 	srv := &Server{
-		pages: HandlerMap{},
+		pages: util.HandlerMap{},
 	}
 	srv.httpServer = http.Server{
 		Addr:           ":8000",

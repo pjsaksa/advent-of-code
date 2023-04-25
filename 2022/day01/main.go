@@ -1,4 +1,4 @@
-package main
+package day01
 
 import (
 	"fmt"
@@ -9,17 +9,19 @@ import (
 	"net/http"
 	"os"
 	"sort"
+
+	"aoc-2022/util"
 )
 
-func initPage01(hmap HandlerMap) {
-	page := &Page01{}
+func InitPage01(hmap util.HandlerMap) {
+	page := &page{}
 
-	hmap["/01"] = page.RenderText
-	hmap["/01/css"] = page.RenderCSS
-	hmap["/01/graph"] = page.RenderGraph
-	hmap["/01/graph.js"] = page.RenderGraphJs
+	hmap["/01"] = page.renderText
+	hmap["/01/css"] = page.renderCSS
+	hmap["/01/graph"] = page.renderGraph
+	hmap["/01/graph.js"] = page.renderGraphJs
 
-	hmap["/01/api/info"] = page.RenderInfo
+	hmap["/01/api/info"] = page.renderInfo
 
 	//
 
@@ -29,8 +31,8 @@ func initPage01(hmap HandlerMap) {
 
 // ------------------------------------------------------------
 
-type Page01 struct {
-	elves       []Page01_Elf
+type page struct {
+	elves       []elf
 	sortedElves []int
 
 	minCalories     int
@@ -38,15 +40,17 @@ type Page01 struct {
 	averageCalories int
 }
 
-type Page01_Elf struct {
+type elf struct {
 	meals         []int
 	totalCalories int
 }
 
-func (page *Page01) parseInput() {
-	f, err := os.Open("input-01.txt")
+func (page *page) parseInput() {
+	const fileName string = "data/input-01.txt"
+
+	f, err := os.Open(fileName)
 	if err != nil {
-		Error("input-01.txt is not available for reading")
+		util.Error("%s is not available for reading", fileName)
 	}
 	defer f.Close()
 
@@ -64,7 +68,7 @@ func (page *Page01) parseInput() {
 				}
 
 				// create new elf
-				elf := Page01_Elf{
+				elf := elf{
 					meals:         meals,
 					totalCalories: totalCalories,
 				}
@@ -81,18 +85,18 @@ func (page *Page01) parseInput() {
 				continue
 			case "EOF":
 			default:
-				Error("reading input: %s", err.Error())
+				util.Error("reading input: %s", err.Error())
 			}
 			break
 		} else if scannedItems == 1 {
 			meals = append(meals, oneMeal)
 		} else {
-			Error("reading input: strange parsing result, scannedItems == %d", scannedItems)
+			util.Error("reading input: strange parsing result, scannedItems == %d", scannedItems)
 		}
 	}
 }
 
-func (page *Page01) updateIndices() {
+func (page *page) updateIndices() {
 	// create unsorted index
 	page.sortedElves = make([]int, len(page.elves))
 	for i := 0; i < len(page.elves); i++ {
@@ -116,7 +120,7 @@ func (page *Page01) updateIndices() {
 	page.averageCalories = total / len(page.elves)
 }
 
-func (page *Page01) updateMinMax(totalCalories int) {
+func (page *page) updateMinMax(totalCalories int) {
 	if len(page.elves) == 1 {
 		page.minCalories = totalCalories
 		page.maxCalories = totalCalories
@@ -130,19 +134,19 @@ func (page *Page01) updateMinMax(totalCalories int) {
 	}
 }
 
-func (page *Page01) ImgWidth() int {
+func (page *page) imgWidth() int {
 	return len(page.elves)*3 + 1
 }
 
-func (page *Page01) ImgHeight() int {
+func (page *page) imgHeight() int {
 	return 400
 }
 
-func (page *Page01) IsRangeOk(begin, end int) bool {
+func (page *page) isRangeOk(begin, end int) bool {
 	return begin >= 0 && begin < len(page.elves) && end >= 0 && end <= len(page.elves) && begin <= end
 }
 
-func (page *Page01) RenderText(out http.ResponseWriter, req *http.Request) {
+func (page *page) renderText(out http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 	case "", "GET":
 		out.Header().Set("Content-Type", "text/html")
@@ -182,17 +186,17 @@ func (page *Page01) RenderText(out http.ResponseWriter, req *http.Request) {
 			page.minCalories,
 			page.averageCalories,
 			page.maxCalories,
-			page.ImgWidth(),
-			page.ImgHeight(),
-			page.ImgWidth(),
-			page.ImgHeight())
+			page.imgWidth(),
+			page.imgHeight(),
+			page.imgWidth(),
+			page.imgHeight())
 	default:
 		out.Header().Add("Allow", "GET")
 		http.Error(out, "Method Not Allowed", http.StatusMethodNotAllowed)
 	}
 }
 
-func (page *Page01) RenderCSS(out http.ResponseWriter, req *http.Request) {
+func (page *page) renderCSS(out http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 	case "", "GET":
 		out.Header().Set("Content-Type", "text/css")
@@ -248,20 +252,20 @@ func (page *Page01) RenderCSS(out http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (page *Page01) RenderGraph(out http.ResponseWriter, req *http.Request) {
+func (page *page) renderGraph(out http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 	case "", "GET":
 		out.Header().Set("Content-type", "image/x-png")
 
 		// render graph image
 		var maxX = len(page.elves)
-		var maxY = page.ImgHeight()
-		img := image.NewNRGBA(image.Rect(0, 0, page.ImgWidth(), page.ImgHeight()))
+		var maxY = page.imgHeight()
+		img := image.NewNRGBA(image.Rect(0, 0, page.imgWidth(), page.imgHeight()))
 
 		sorted := (req.URL.Query().Get("sorted") == "true")
 
 		for x := 0; x < maxX; x++ {
-			var elf *Page01_Elf
+			var elf *elf
 
 			if sorted {
 				elf = &page.elves[page.sortedElves[x]]
@@ -285,7 +289,7 @@ func (page *Page01) RenderGraph(out http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (page *Page01) RenderGraphJs(out http.ResponseWriter, req *http.Request) {
+func (page *page) renderGraphJs(out http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 	case "", "GET":
 		out.Header().Set("Content-type", "text/javascript")
@@ -507,19 +511,19 @@ function init() {
 	}
 }
 
-func (page *Page01) RenderInfo(out http.ResponseWriter, req *http.Request) {
+func (page *page) renderInfo(out http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 	case "", "GET":
 		sorted := (req.URL.Query().Get("sorted") == "true")
 
 		var bar1, bar2 int
-		if n, err := fmt.Sscanf(req.URL.Query().Get("n"), "%d_%d", &bar1, &bar2); n == 2 && err == nil && page.IsRangeOk(bar1, bar2) {
+		if n, err := fmt.Sscanf(req.URL.Query().Get("n"), "%d_%d", &bar1, &bar2); n == 2 && err == nil && page.isRangeOk(bar1, bar2) {
 			out.Header().Set("Content-Type", "application/json")
-			page.PrintElfRangeInfo(out, bar1, bar2, sorted)
+			page.printElfRangeInfo(out, bar1, bar2, sorted)
 
-		} else if n, err := fmt.Sscanf(req.URL.Query().Get("n"), "%d", &bar1); n == 1 && err == nil && page.IsRangeOk(bar1, bar1) {
+		} else if n, err := fmt.Sscanf(req.URL.Query().Get("n"), "%d", &bar1); n == 1 && err == nil && page.isRangeOk(bar1, bar1) {
 			out.Header().Set("Content-Type", "application/json")
-			page.PrintElfRangeInfo(out, bar1, bar1, sorted)
+			page.printElfRangeInfo(out, bar1, bar1, sorted)
 
 		} else {
 			http.Error(out, "Bad query", http.StatusBadRequest)
@@ -530,7 +534,7 @@ func (page *Page01) RenderInfo(out http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (page *Page01) PrintElfRangeInfo(out io.Writer, begin int, end int, sorted bool) {
+func (page *page) printElfRangeInfo(out io.Writer, begin int, end int, sorted bool) {
 	fmt.Fprint(out, "[\n")
 	for bar := begin; bar <= end; bar++ {
 		if bar > begin {
@@ -544,7 +548,7 @@ func (page *Page01) PrintElfRangeInfo(out io.Writer, begin int, end int, sorted 
 			elfN = bar
 		}
 
-		page.PrintOneElfInfo(
+		page.printOneElfInfo(
 			out,
 			bar,
 			elfN,
@@ -553,8 +557,8 @@ func (page *Page01) PrintElfRangeInfo(out io.Writer, begin int, end int, sorted 
 	fmt.Fprint(out, "\n]\n")
 }
 
-func (page *Page01) PrintOneElfInfo(out io.Writer, bar int, elfN int, elf *Page01_Elf) {
-	barHeight := int(float64(elf.totalCalories) / float64(page.maxCalories) * float64(page.ImgHeight()))
+func (page *page) printOneElfInfo(out io.Writer, bar int, elfN int, elf *elf) {
+	barHeight := int(float64(elf.totalCalories) / float64(page.maxCalories) * float64(page.imgHeight()))
 
 	fmt.Fprintf(
 		out,
