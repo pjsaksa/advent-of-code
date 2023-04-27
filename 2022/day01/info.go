@@ -6,24 +6,45 @@ import (
 	"net/http"
 )
 
+// Return true if the range of elves sent by browser is a valid range based on
+// puzzle input.
 func (page *page) isRangeOk(begin, end int) bool {
-	return begin >= 0 && begin < len(page.elves) && end >= 0 && end <= len(page.elves) && begin <= end
+	return begin >= 0 &&
+		begin < len(page.elves) &&
+		end >= 0 &&
+		end <= len(page.elves) &&
+		begin <= end
 }
 
 func (page *page) renderInfo(out http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 	case "", "GET":
 		sorted := (req.URL.Query().Get("sorted") == "true")
+		queryN := req.URL.Query().Get("n")
 
 		var bar1, bar2 int
-		if n, err := fmt.Sscanf(req.URL.Query().Get("n"), "%d_%d", &bar1, &bar2); n == 2 && err == nil && page.isRangeOk(bar1, bar2) {
-			out.Header().Set("Content-Type", "application/json")
-			page.printElfRangeInfo(out, bar1, bar2, sorted)
+		if verbs, err := fmt.Sscanf(queryN, "%d_%d", &bar1, &bar2); verbs == 2 && err == nil {
+			// Found match to pattern "%d_%d": a range with a begin and an end.
 
-		} else if n, err := fmt.Sscanf(req.URL.Query().Get("n"), "%d", &bar1); n == 1 && err == nil && page.isRangeOk(bar1, bar1) {
-			out.Header().Set("Content-Type", "application/json")
-			page.printElfRangeInfo(out, bar1, bar1, sorted)
+			if page.isRangeOk(bar1, bar2) {
+				out.Header().Set("Content-Type", "application/json")
 
+				// Produce the data.
+				page.printElfRangeInfo(out, bar1, bar2, sorted)
+			} else {
+				http.Error(out, "Bad query", http.StatusBadRequest)
+			}
+		} else if verbs, err := fmt.Sscanf(queryN, "%d", &bar1); verbs == 1 && err == nil {
+			// Found match to pattern "%d": selection of a single elf.
+
+			if page.isRangeOk(bar1, bar1) {
+				out.Header().Set("Content-Type", "application/json")
+
+				// Produce the data.
+				page.printElfRangeInfo(out, bar1, bar1, sorted)
+			} else {
+				http.Error(out, "Bad query", http.StatusBadRequest)
+			}
 		} else {
 			http.Error(out, "Bad query", http.StatusBadRequest)
 		}
@@ -33,6 +54,7 @@ func (page *page) renderInfo(out http.ResponseWriter, req *http.Request) {
 	}
 }
 
+// Produce JSON array containing info of elves in a range.
 func (page *page) printElfRangeInfo(out io.Writer, begin int, end int, sorted bool) {
 	fmt.Fprint(out, "[\n")
 	for bar := begin; bar <= end; bar++ {
@@ -56,12 +78,14 @@ func (page *page) printElfRangeInfo(out io.Writer, begin int, end int, sorted bo
 	fmt.Fprint(out, "\n]\n")
 }
 
+// Produce JSON object containing info of one elf.
 func (page *page) printOneElfInfo(out io.Writer, bar int, elfN int, elf *elf) {
 	barHeight := int(float64(elf.totalCalories) / float64(page.maxCalories) * float64(page.imgHeight()))
 
 	fmt.Fprintf(
 		out,
-		"\t{ \"bar\": %d, \"elf\": %d, \"elves\": %d, \"totalCalories\": %d, \"barHeight\": %d, \"meals\":\n\t\t[ ",
+		`	{ "bar": %d, "elf": %d, "elves": %d, "totalCalories": %d, "barHeight": %d, "meals":
+		[ `,
 		bar,
 		elfN,
 		len(page.elves),

@@ -9,9 +9,8 @@ func (page *page) renderText(out http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 	case "", "GET":
 		out.Header().Set("Content-Type", "text/html")
-
-		// render text
-		fmt.Fprintf(out,
+		fmt.Fprintf(
+			out,
 			`<!doctype html>
 <html>
 <head>

@@ -9,19 +9,19 @@ let uiCanvas = null
 function setSorted(newSorted) {
 	sorted = newSorted
 
-	const img = document.querySelector("#view1 > img")
+	const img = document.querySelector('#view1 > img')
 
 	if (sorted) {
-		img.src = "/01/graph?sorted=true"
+		img.src = '/01/graph?sorted=true'
 	} else {
-		img.src = "/01/graph"
+		img.src = '/01/graph'
 	}
 
 	hlClear()
 }
 
 function hlClear() {
-	const ctx = uiCanvas.getContext("2d")
+	const ctx = uiCanvas.getContext('2d')
 
 	ctx.clearRect(
 		0,
@@ -29,9 +29,9 @@ function hlClear() {
 		uiCanvas.width,
 		uiCanvas.height)
 
-	const info = document.querySelector("#info")
+	const info = document.querySelector('#info')
 	if (info) {
-		info.innerHTML = ""
+		info.innerHTML = ''
 		info.hidden = true
 	}
 
@@ -42,7 +42,7 @@ function hlClear() {
 }
 
 function hlBar(range, data) {
-	const ctx = uiCanvas.getContext("2d")
+	const ctx = uiCanvas.getContext('2d')
 
 	ctx.clearRect(
 		0,
@@ -50,7 +50,7 @@ function hlBar(range, data) {
 		uiCanvas.width,
 		uiCanvas.height)
 
-	ctx.fillStyle = "#40b0f0"
+	ctx.fillStyle = '#40b0f0'
 	for (let idx = 0; idx < data.length; idx++) {
 		ctx.fillRect(
 			data[idx].bar*3 + 1,
@@ -63,30 +63,30 @@ function hlBar(range, data) {
 
 	//
 
-	const info = document.querySelector("#info")
+	const info = document.querySelector('#info')
 	if (info) {
-		let infoContent = "<button id=\"unlock\" onclick=\"hlClear()\" hidden>Clear selection</button>\n"
+		let infoContent = '<button id="unlock" onclick="hlClear()" hidden>Clear selection</button>\n'
 		let totalCalories = 0
 
-		infoContent += "<ul>\n"
+		infoContent += '<ul>\n'
 		for (let idx = 0; idx < data.length; idx++) {
 			totalCalories += data[idx].totalCalories
 
-			infoContent += "<li>Elf #" + (data[idx].elf+1) + " : " + data[idx].totalCalories + " = "
+			infoContent += '<li>Elf #' + (data[idx].elf+1) + ' : ' + data[idx].totalCalories + ' = '
 			for (let m = 0; m < data[idx].meals.length; m++) {
 				if (m > 0) {
-					infoContent += " + "
+					infoContent += ' + '
 				}
 				infoContent += data[idx].meals[m]
 			}
-			infoContent += "</li>\n"
+			infoContent += '</li>\n'
 		}
 
 		if (data.length > 1) {
-			infoContent += "<li>These " + data.length + " elves have " + totalCalories + " calories in total</li>\n"
+			infoContent += '<li>These ' + data.length + ' elves have ' + totalCalories + ' calories in total</li>\n'
 		}
 
-		infoContent += "</ul>\n"
+		infoContent += '</ul>\n'
 
 		//
 
@@ -96,7 +96,7 @@ function hlBar(range, data) {
 }
 
 function hoverEvent(e) {
-	if (event.type !== "mousemove"
+	if (event.type !== 'mousemove'
 	    || showLocked)
 	{
 		return
@@ -121,9 +121,9 @@ function hoverEvent(e) {
 			{
 				let dragRange
 				if (dragBegin < hoverBar) {
-					dragRange = dragBegin + "_" + hoverBar
+					dragRange = dragBegin + '_' + hoverBar
 				} else if (dragBegin > hoverBar) {
-					dragRange = hoverBar + "_" + dragBegin
+					dragRange = hoverBar + '_' + dragBegin
 				} else {
 					dragRange = hoverBar
 				}
@@ -146,8 +146,8 @@ function fetchBar(bar) {
 
 	//
 
-	const query = ("n="+bar) + (sorted ? "&sorted=true" : "")
-	fetch("/01/api/info?" + query)
+	const query = ('n='+bar) + (sorted ? '&sorted=true' : '')
+	fetch('/01/info?' + query)
 		.then((response) => response.json())
 		.then((json) => {
 			fetchPending = false
@@ -158,12 +158,12 @@ function fetchBar(bar) {
 		})
 		.catch((error) => {
 			fetchPending = false
-			console.error("Error fetching info: " + error.message)
+			console.error('Error fetching info: ' + error.message)
 		})
 }
 
 function dragBeginEvent(event) {
-	if (event.type !== "mousedown"
+	if (event.type !== 'mousedown'
 	    || event.button != 0
 	    || showLocked)
 	{
@@ -177,7 +177,7 @@ function dragBeginEvent(event) {
 }
 
 function dragEndEvent(event) {
-	if (event.type !== "mouseup"
+	if (event.type !== 'mouseup'
 	    || event.button != 0
 	    || dragBegin === null
 	    || showLocked)
@@ -191,17 +191,17 @@ function dragEndEvent(event) {
 	dragBegin = null
 	showLocked = true
 
-	document.querySelector("#unlock").hidden = false
+	document.querySelector('#unlock').hidden = false
 }
 
 function init() {
-	uiCanvas = document.querySelector("#view1 > .ui")
-	const ctx = uiCanvas.getContext("2d")
+	uiCanvas = document.querySelector('#view1 > .ui')
+	const ctx = uiCanvas.getContext('2d')
 
-	ctx.lineCap = "square"
+	ctx.lineCap = 'square'
 
-	uiCanvas.addEventListener("mousemove", hoverEvent, { capture: true })
-	uiCanvas.addEventListener("mouseleave", (event) => { if (!showLocked) hlClear() }, { capture: true })
-	uiCanvas.addEventListener("mousedown", dragBeginEvent, { capture: true })
-	uiCanvas.addEventListener("mouseup", dragEndEvent, { capture: true })
+	uiCanvas.addEventListener('mousemove', hoverEvent, { capture: true })
+	uiCanvas.addEventListener('mouseleave', (event) => { if (!showLocked) hlClear() }, { capture: true })
+	uiCanvas.addEventListener('mousedown', dragBeginEvent, { capture: true })
+	uiCanvas.addEventListener('mouseup', dragEndEvent, { capture: true })
 }
