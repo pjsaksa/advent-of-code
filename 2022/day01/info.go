@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+
+	"aoc-2022/util/log"
 )
 
 // Return true if the range of elves sent by browser is a valid range based on
@@ -16,7 +18,7 @@ func (page *page) isRangeOk(begin, end int) bool {
 		begin <= end
 }
 
-func (page *page) renderInfo(out http.ResponseWriter, req *http.Request) {
+func (page *page) renderInfo(out http.ResponseWriter, req *http.Request) log.Message {
 	switch req.Method {
 	case "", "GET":
 		sorted := (req.URL.Query().Get("sorted") == "true")
@@ -31,8 +33,10 @@ func (page *page) renderInfo(out http.ResponseWriter, req *http.Request) {
 
 				// Produce the data.
 				page.printElfRangeInfo(out, bar1, bar2, sorted)
+				return log.DebugMsg("Ok")
 			} else {
-				http.Error(out, "Bad query", http.StatusBadRequest)
+				http.Error(out, "Bad Query String", http.StatusBadRequest)
+				return log.WarningMsg("Bad Query String (n=%s)", queryN)
 			}
 		} else if verbs, err := fmt.Sscanf(queryN, "%d", &bar1); verbs == 1 && err == nil {
 			// Found match to pattern "%d": selection of a single elf.
@@ -42,15 +46,19 @@ func (page *page) renderInfo(out http.ResponseWriter, req *http.Request) {
 
 				// Produce the data.
 				page.printElfRangeInfo(out, bar1, bar1, sorted)
+				return log.DebugMsg("Ok")
 			} else {
-				http.Error(out, "Bad query", http.StatusBadRequest)
+				http.Error(out, "Bad Query String", http.StatusBadRequest)
+				return log.WarningMsg("Bad Query String (n=%s)", queryN)
 			}
 		} else {
-			http.Error(out, "Bad query", http.StatusBadRequest)
+			http.Error(out, "Bad Query String", http.StatusBadRequest)
+			return log.WarningMsg("Bad Query String (n=%s)", queryN)
 		}
 	default:
 		out.Header().Add("Allow", "GET")
 		http.Error(out, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return log.WarningMsg("Method Not Allowed (%s)", req.Method)
 	}
 }
 

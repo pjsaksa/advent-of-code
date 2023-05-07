@@ -5,6 +5,8 @@ import (
 	"image/color"
 	"image/png"
 	"net/http"
+
+	"aoc-2022/util/log"
 )
 
 // Render a image in PNG format containing bar graph where each bar represents
@@ -13,7 +15,7 @@ import (
 //
 // The image is otherwise transparent, so the background (color) is set by the
 // web page in which this image is shown.
-func (page *page) renderGraph(out http.ResponseWriter, req *http.Request) {
+func (page *page) renderGraph(out http.ResponseWriter, req *http.Request) log.Message {
 	var barColor = color.NRGBA{0x80, 0x80, 0x80, 0xFF}
 
 	switch req.Method {
@@ -48,8 +50,11 @@ func (page *page) renderGraph(out http.ResponseWriter, req *http.Request) {
 		// Encode the image as PNG into HTTP response.
 		png.Encode(out, img)
 
+		return log.DebugMsg("Ok")
+
 	default:
 		out.Header().Add("Allow", "GET")
 		http.Error(out, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return log.WarningMsg("Method Not Allowed (%s)", req.Method)
 	}
 }

@@ -1,7 +1,7 @@
 package day01
 
 import (
-	"aoc-2022/util"
+	"aoc-2022/util/log"
 
 	"fmt"
 	"os"
@@ -16,7 +16,7 @@ func (page *page) readPuzzleInput(fileName string) {
 	// Open the input file.
 	f, err := os.Open(fileName)
 	if err != nil {
-		util.Error("%s is not available for reading", fileName)
+		log.ERROR("%s is not available for reading", fileName)
 	}
 	defer f.Close()
 
@@ -59,7 +59,7 @@ func (page *page) readPuzzleInput(fileName string) {
 				continue
 			case "EOF":
 			default:
-				util.Error("reading input: %s", err.Error())
+				log.ERROR("reading input: %s", err.Error())
 			}
 			break
 		} else if scannedItems == 1 {
@@ -70,7 +70,7 @@ func (page *page) readPuzzleInput(fileName string) {
 		} else {
 			// NOTE: This is unreachable, as far as I know.
 
-			util.Error("reading input: strange parsing result, scannedItems == %d", scannedItems)
+			log.ERROR("reading input: strange parsing result, scannedItems == %d", scannedItems)
 		}
 	}
 

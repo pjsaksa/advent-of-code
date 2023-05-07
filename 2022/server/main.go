@@ -7,6 +7,7 @@ import (
 
 	"aoc-2022/day01"
 	"aoc-2022/util"
+	"aoc-2022/util/log"
 )
 
 func main() {
@@ -19,7 +20,7 @@ func main() {
 
 	//
 
-	fmt.Println("Listening HTTP at", srv.httpServer.Addr)
+	log.INFO("Listening HTTP at %s", srv.httpServer.Addr)
 
 	if err := srv.httpServer.ListenAndServe(); err != http.ErrServerClosed {
 		panic(err.Error())
@@ -48,22 +49,27 @@ func newServer() *Server {
 }
 
 func (srv *Server) ServeHTTP(out http.ResponseWriter, req *http.Request) {
-	fmt.Printf("[%s] %s %s %s\n",
+	reqMsg := log.EventMsg(
+		"[%s] %s %s %s",
 		req.RemoteAddr,
 		req.Method,
 		req.URL.EscapedPath(),
 		req.URL.RawQuery)
+	respMsg := log.FatalMsg("Handler is missing response log message")
 
 	if handler, ok := srv.pages[req.URL.EscapedPath()]; ok {
-		handler(out, req)
+		respMsg = handler(out, req)
 	} else {
 		http.NotFound(out, req)
+		respMsg = log.WarningMsg("Not Found")
 	}
+
+	log.LOG(reqMsg, respMsg)
 }
 
 // ------------------------------------------------------------
 
-func RenderCSS(out http.ResponseWriter, req *http.Request) {
+func RenderCSS(out http.ResponseWriter, req *http.Request) log.Message {
 	switch req.Method {
 	case "", "GET":
 		out.Header().Set("Content-Type", "text/css")
@@ -72,8 +78,10 @@ func RenderCSS(out http.ResponseWriter, req *http.Request) {
 	background: #a0a0a0;
 }
 `)
+		return log.DebugMsg("Ok")
 	default:
 		out.Header().Add("Allow", "GET")
 		http.Error(out, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return log.WarningMsg("Method Not Allowed (%s)", req.Method)
 	}
 }

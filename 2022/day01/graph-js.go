@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+
+	"aoc-2022/util/log"
 )
 
-func (page *page) renderGraphJs(out http.ResponseWriter, req *http.Request) {
+func (page *page) renderGraphJs(out http.ResponseWriter, req *http.Request) log.Message {
 	switch req.Method {
 	case "", "GET":
 		out.Header().Set("Content-type", "text/javascript")
@@ -20,15 +22,19 @@ func (page *page) renderGraphJs(out http.ResponseWriter, req *http.Request) {
 				out,
 				string(fileContent),
 				len(page.elves))
+			return log.DebugMsg("Ok")
 		} else {
+			errorMsg := "Internal Server Error: Reading file 'static/01/graph.js' failed"
 			http.Error(
 				out,
-				"Internal Server Error: Reading file 'static/01/graph.js' failed",
+				errorMsg,
 				http.StatusInternalServerError)
+			return log.ErrorMsg(errorMsg)
 		}
 
 	default:
 		out.Header().Add("Allow", "GET")
 		http.Error(out, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return log.WarningMsg("Method Not Allowed (%s)", req.Method)
 	}
 }

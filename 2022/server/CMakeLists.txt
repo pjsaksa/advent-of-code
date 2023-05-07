@@ -4,9 +4,7 @@ set(SERVER_DEP "${SERVER_DEP}"
 	#
 	"${CWD}/go.mod"
 	#
-	"${CWD}/main.go"
-	#
-	PARENT_SCOPE )
+	"${CWD}/main.go" )
 
 # build
 

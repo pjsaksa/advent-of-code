@@ -3,9 +3,11 @@ package day01
 import (
 	"fmt"
 	"net/http"
+
+	"aoc-2022/util/log"
 )
 
-func (page *page) renderText(out http.ResponseWriter, req *http.Request) {
+func (page *page) renderText(out http.ResponseWriter, req *http.Request) log.Message {
 	switch req.Method {
 	case "", "GET":
 		out.Header().Set("Content-Type", "text/html")
@@ -48,8 +50,10 @@ func (page *page) renderText(out http.ResponseWriter, req *http.Request) {
 			page.imgHeight(),
 			page.imgWidth(),
 			page.imgHeight())
+		return log.DebugMsg("Ok")
 	default:
 		out.Header().Add("Allow", "GET")
 		http.Error(out, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return log.WarningMsg("Method Not Allowed (%s)", req.Method)
 	}
 }
