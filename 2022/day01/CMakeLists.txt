@@ -4,7 +4,6 @@ set(SERVER_DEP "${SERVER_DEP}"
 	#
 	"${CWD}/go.mod"
 	#
-	"${CWD}/css.go"
 	"${CWD}/graph.go"
 	"${CWD}/graph-js.go"
 	"${CWD}/info.go"

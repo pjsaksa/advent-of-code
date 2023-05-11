@@ -21,19 +21,28 @@ import (
 
 // Initialize day 1 puzzle data structures and configure HTTP server to serve
 // day 1 puzzle requests.
-func InitPage01(hmap util.HandlerMap) {
+func InitPage01(hmap util.HandlerMap, index *util.IndexPage) {
 	page := &page{}
 
 	// Add HTTP request handlers to 'hmap'.
 	hmap["/01"] = page.renderText             // text.go
-	hmap["/01/css"] = page.renderCSS          // css.go
 	hmap["/01/graph"] = page.renderGraph      // graph.go
 	hmap["/01/graph.js"] = page.renderGraphJs // graph-js.go
 	hmap["/01/info"] = page.renderInfo        // info.go
+	hmap["/01/css"] = util.ServeStaticFile("01/01.css", "text/css")
 
 	// Read and process puzzle input.
 	page.readPuzzleInput("data/input-01.txt")
 	page.sortIndex()
+
+	// Add the information of this page to index page.
+	index.AddPage(
+		"/01",
+		"Day 01",
+		"The goal is to find out which elves are carrying the biggest amount "+
+			"of calories. The input data for this puzzle is a list of elves, "+
+			"including lists of meals they are carrying and calories for each"+
+			" meal.")
 }
 
 // ------------------------------------------------------------

@@ -12,16 +12,14 @@ import (
 
 func main() {
 	srv := newServer()
-
-	//
-
 	srv.pages["/default.css"] = RenderCSS
-	day01.InitPage01(srv.pages)
+	//srv.pages["/img/close.svg"] = util.ServeStaticFile("img/close-outline.svg", "image/svg+xml")
 
-	//
+	indexPage := util.InitIndex(srv.pages)
+	day01.InitPage01(srv.pages, indexPage)
 
+	// Start the server.
 	log.INFO("Listening HTTP at %s", srv.httpServer.Addr)
-
 	if err := srv.httpServer.ListenAndServe(); err != http.ErrServerClosed {
 		panic(err.Error())
 	}

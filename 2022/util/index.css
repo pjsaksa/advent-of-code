@@ -1,0 +1,33 @@
+h1 {
+	font-family: sans-serif;
+	text-align: center;
+}
+#list .item {
+	display: block;
+	color: #404040;
+	background: #b0b0b0;
+	border: 3px #d0d0d0 solid;
+	margin: 3px;
+	text-decoration: none;
+	min-height: 50px;
+	clear: both;
+	margin: 10px 20px;
+}
+#list .item:hover {
+	background: #c0c0c0;
+	border: 3px #f0f0f0 solid;
+}
+#list .label {
+	float: left;
+	width: 100px;
+	margin: 10px 0px;
+	text-align: center;
+	font-family: sans-serif;
+	font-size: 22px;
+}
+#list .desc {
+	margin-left: 100px;
+	padding: 8px 8px 8px 0px;
+	text-align: justify;
+	font-size: 18px;
+}

@@ -28,6 +28,10 @@ install(
 	PROGRAMS "${SERVER_BIN}"
 	DESTINATION / )
 
+install(
+	FILES "close-outline.svg"
+	DESTINATION /static/img )
+
 # test
 
 add_test(

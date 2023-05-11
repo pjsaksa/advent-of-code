@@ -1,3 +1,14 @@
+#close {
+	float: right;
+}
+#close svg {
+    width: 32px;
+    height: 32px;
+    color: #f0f0f0;
+    background: #b82828;
+    border: 3px white solid;
+	border-radius: 12px;
+}
 #statistics {
 	border-collapse: collapse;
 	margin: 0px 2em;
