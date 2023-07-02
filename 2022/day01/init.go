@@ -1,7 +1,7 @@
 package day01
 
 import (
-	"aoc-2022/util/log"
+	"github.com/pjsaksa/go-utils/log"
 
 	"fmt"
 	"os"

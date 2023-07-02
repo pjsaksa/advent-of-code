@@ -6,7 +6,7 @@ import (
 	"image/png"
 	"net/http"
 
-	"aoc-2022/util/log"
+	"github.com/pjsaksa/go-utils/log"
 )
 
 // Render a image in PNG format containing bar graph where each bar represents

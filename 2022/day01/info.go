@@ -5,7 +5,7 @@ import (
 	"io"
 	"net/http"
 
-	"aoc-2022/util/log"
+	"github.com/pjsaksa/go-utils/log"
 )
 
 // Return true if the range of elves sent by browser is a valid range based on

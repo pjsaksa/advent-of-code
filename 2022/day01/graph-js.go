@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	"aoc-2022/util/log"
+	"github.com/pjsaksa/go-utils/log"
 )
 
 func (page *page) renderGraphJs(out http.ResponseWriter, req *http.Request) log.Message {

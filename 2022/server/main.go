@@ -7,7 +7,7 @@ import (
 
 	"aoc-2022/day01"
 	"aoc-2022/util"
-	"aoc-2022/util/log"
+	"github.com/pjsaksa/go-utils/log"
 )
 
 func main() {

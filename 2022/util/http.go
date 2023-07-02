@@ -3,7 +3,7 @@ package util
 import (
 	"net/http"
 
-	"aoc-2022/util/log"
+	"github.com/pjsaksa/go-utils/log"
 )
 
 func ServeStaticFile(fileName, contentType string) HandlerFunc {

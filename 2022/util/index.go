@@ -5,7 +5,7 @@ import (
 	"html/template"
 	"net/http"
 
-	"aoc-2022/util/log"
+	"github.com/pjsaksa/go-utils/log"
 )
 
 type IndexPage struct {
